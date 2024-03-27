@@ -1,0 +1,729 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL_SERVER")
+}
+
+model ADM_ORDEN_SERVICIO {
+  id_orden_servicio          Int                          @id(map: "PK__ADM_ORDE__AF9AF6076952D749") @default(autoincrement())
+  id_atencion                Int?
+  n_total                    Decimal?                     @db.Decimal(10, 2)
+  n_paciente                 Decimal?                     @db.Decimal(10, 2)
+  n_garante                  Decimal?                     @db.Decimal(10, 2)
+  t_observacion              String?                      @db.VarChar(250)
+  f_facturado                Int?
+  id_factura                 Int?
+  f_estado                   Int
+  id_user_registro           Int
+  id_user_modifica           Int?
+  d_fecha_registro           DateTime                     @db.DateTime
+  d_fecha_modifica           DateTime?                    @db.DateTime
+  id_atencion_romsoft        Int?
+  id_sucursal                Int?
+  n_documento                String?                      @db.VarChar(15)
+  f_envio                    Int?
+  f_resultado                Int?
+  ADM_ORDEN_SERVICIO_DETALLE ADM_ORDEN_SERVICIO_DETALLE[]
+  ATENCION                   ATENCION?                     @relation(fields: [id_atencion], references: [id_atencion], onUpdate: NoAction)
+}
+
+model ADM_ORDEN_SERVICIO_DETALLE {
+  id_orden_servicio_detalle Int                @id(map: "PK__ADM_ORDE__7D1E9FC416C0C31D") @default(autoincrement())
+  id_orden_servicio         Int
+  d_fecha_servicio          DateTime?          @db.DateTime
+  c_hora_servicio           String?            @db.VarChar(8)
+  id_tarifario_segus        Int?
+  id_profesional            Int?
+  n_precio                  Decimal?           @db.Decimal(10, 2)
+  n_cantidad                Int?
+  n_parcial                 Decimal?           @db.Decimal(10, 2)
+  n_descuento               Decimal?           @db.Decimal(10, 2)
+  n_auditoria               Decimal?           @db.Decimal(10, 2)
+  t_auditoria_obs           String?            @db.VarChar(250)
+  n_total                   Decimal?           @db.Decimal(10, 2)
+  n_paciente                Decimal?           @db.Decimal(10, 2)
+  n_garante                 Decimal?           @db.Decimal(10, 2)
+  n_copago_variable         Decimal?           @db.Decimal(10, 2)
+  n_copago_fijo             Decimal?           @db.Decimal(10, 2)
+  f_copago_variable         Int?
+  n_impuesto                Decimal?           @db.Decimal(6, 2)
+  f_afecto                  Int?
+  f_estado                  Int
+  id_habitacion_i           Int?
+  d_fecha_inicio            DateTime?          @db.DateTime
+  c_hora_inicio             String?            @db.VarChar(8)
+  d_fecha_final             DateTime?          @db.DateTime
+  c_hora_final              String?            @db.VarChar(8)
+  id_habitacion_f           Int?
+  d_fecha_registro          DateTime           @db.DateTime
+  d_fecha_modifica          DateTime?          @db.DateTime
+  id_user_registro          Int
+  id_user_modifica          Int?
+  codigo_segus              String?            @db.VarChar(10)
+  ADM_ORDEN_SERVICIO        ADM_ORDEN_SERVICIO @relation(fields: [id_orden_servicio], references: [id_orden_servicio], onUpdate: NoAction, map: "FK__ADM_ORDEN__id_or__11AA861D")
+  resultado_lab             resultado_lab[]
+
+  @@unique([id_orden_servicio, id_tarifario_segus], map: "C_Unique_detalle")
+  @@unique([id_orden_servicio, id_tarifario_segus], map: "C_Unique_detalleS")
+}
+
+model ATENCION {
+  id_atencion            Int                  @id(map: "PK__ATENCION__D0A40236675ACC65") @default(autoincrement())
+  id_empresa             Int
+  id_paciente            Int?
+  id_tipo_paciente       Int
+  id_tipo_atencion       Int
+  id_tipo_origen         Int
+  id_categoria_pago      Int
+  id_contratante         Int
+  id_beneficio           Int
+  id_medico              Int?
+  c_historia_orden       String?              @db.VarChar(10)
+  f_activo               Boolean?
+  d_fecha_ingreso        DateTime?            @db.DateTime
+  d_fecha_alta           DateTime?            @db.DateTime
+  id_parentesco          Int?
+  t_nombre_titular       String?              @db.VarChar(200)
+  c_numero_poliza        String?              @db.VarChar(50)
+  c_placa_vehiculo       String?              @db.VarChar(25)
+  c_certificado          String?              @db.VarChar(50)
+  f_soat                 Int?                 @default(0, map: "DF__ATENCION__f_soat__4DBF7024")
+  f_denuncia             Int?                 @default(0, map: "DF__ATENCION__f_denu__4EB3945D")
+  f_carta_garantia       Int?                 @default(0, map: "DF__ATENCION__f_cart__4FA7B896")
+  t_resp_1_nombre        String?              @db.VarChar(200)
+  t_resp_1_trabajo       String?              @db.VarChar(200)
+  t_resp_1_cargo         String?              @db.VarChar(100)
+  t_resp_1_fono1         String?              @db.VarChar(25)
+  t_resp_1_fono2         String?              @db.VarChar(25)
+  t_resp_2_nombre        String?              @db.VarChar(200)
+  t_resp_2_trabajo       String?              @db.VarChar(200)
+  t_resp_2_cargo         String?              @db.VarChar(100)
+  t_resp_2_fono1         String?              @db.VarChar(25)
+  t_resp_2_fono2         String?              @db.VarChar(25)
+  f_alta                 Int?                 @default(0, map: "DF__ATENCION__f_alta__509BDCCF")
+  id_tipo_egreso         Int
+  id_proveedor           Int
+  id_proveedor_contacto  Int
+  d_proveedor_fecha      DateTime?            @db.DateTime
+  t_proveedor_comentario String?              @db.VarChar(200)
+  t_numero_caso          String?              @db.VarChar(50)
+  id_hotel_entidad       Int
+  c_hotel_telefono_1     String?              @db.VarChar(25)
+  c_hotel_telefono_2     String?              @db.VarChar(25)
+  t_hotel_email          String?              @db.VarChar(200)
+  d_hotel_llegada        DateTime?            @db.DateTime
+  d_hotel_salida         DateTime?            @db.DateTime
+  id_hotel_agencia       Int
+  t_hotel_contacto       String?              @db.VarChar(50)
+  c_hotel_agencia_fono1  String?              @db.VarChar(25)
+  c_hotel_agencia_fono2  String?              @db.VarChar(25)
+  f_transferencia        Int?                 @default(0, map: "DF__ATENCION__f_tran__51900108")
+  IdUsuario              Int?
+  Acceso                 Boolean?
+  UsuReg                 String?              @db.Char(25)
+  IdLlamada              String?              @default("", map: "DF__ATENCION__IdLlam__52842541") @db.Char(9)
+  Hora                   String?              @default("", map: "DF__ATENCION__Hora__5378497A") @db.Char(8)
+  IdSolicitud            Int?
+  f_estado_ref           Int?
+  id_atencion_ref        Int?
+  id_persona             Int?
+  id_user_registro       Int?
+  id_user_modifica       Int?
+  usuario_acceso_create  Int?
+  usuario_acceso_update  Int?
+  d_fecha_registro       DateTime?            @db.DateTime
+  d_fecha_modifica       DateTime?            @db.DateTime
+  id_plan_seguro_r7      Int?
+  id_categoria_pago_r7   Int?
+  empresa                empresa              @relation(fields: [id_empresa], references: [id_empresa], onUpdate: NoAction, map: "FK__ATENCION__id_emp__62BA8D0A")
+  medico                 medico?              @relation(fields: [id_medico], references: [id_medico], onDelete: NoAction, onUpdate: NoAction, map: "FK__ATENCION__id_med__6596F9B5")
+  PACIENTE               PACIENTE?            @relation(fields: [id_paciente], references: [id_paciente], onDelete: NoAction, onUpdate: NoAction, map: "FK__ATENCION__id_pac__668B1DEE")
+  parentesco             parentesco?          @relation(fields: [id_parentesco], references: [id_parentesco], onDelete: NoAction, onUpdate: NoAction, map: "FK__ATENCION__id_par__677F4227")
+  tipo_paciente          tipo_paciente        @relation(fields: [id_tipo_paciente], references: [id_tipo_paciente], onUpdate: NoAction, map: "FK__ATENCION__id_tip__69678A99")
+  tipo_atencion          tipo_atencion        @relation(fields: [id_tipo_atencion], references: [id_tipo_atencion], onUpdate: NoAction, map: "FK__ATENCION__id_tip__6A5BAED2")
+  persona                persona?             @relation(fields: [id_persona], references: [per_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_id_persona")
+  ADM_ORDEN_SERVICIO     ADM_ORDEN_SERVICIO[]
+}
+
+model contacto {
+  contac_id             Int                  @id(map: "PK__contacto__7EEE3DE64778DB68") @default(autoincrement())
+  contac_persona        Int
+  contac_tipo           Int
+  contac_fech_reg       DateTime?            @default(now(), map: "DF__contacto__contac__45A94D10") @db.DateTime
+  contac_fech_update    DateTime?            @db.DateTime
+  contac_usuario_reg    Int
+  contac_usuario_update Int?
+  contac_token_dni      String?              @db.VarChar(150)
+  persona               persona              @relation(fields: [contac_persona], references: [per_id], onUpdate: NoAction, map: "FK__contacto__contac__43C1049E")
+  tipo_contacto         tipo_contacto        @relation(fields: [contac_tipo], references: [tcontac_id], onUpdate: NoAction, map: "FK__contacto__contac__44B528D7")
+  detalle_entidad       detalle_entidad[]
+  solicitud_atencion    solicitud_atencion[]
+  visita_ventas         visita_ventas[]
+}
+
+model d_examen_lab {
+  d_exam_lab_id             Int             @id(map: "PK__d_examen__5B03A7D45F8E3564") @default(autoincrement())
+  d_exam_lab_cod_segus      String          @db.VarChar(10)
+  d_exam_lab_ord            Int             @db.TinyInt
+  d_exam_lab_desc           String          @db.VarChar(100)
+  d_exam_lab_obs            String?         @db.VarChar(100)
+  d_exam_lab_tipo           String          @db.VarChar(100)
+  d_exam_lad_config         String?         @db.NVarChar(4000)
+  d_exam_lab_cod_segusID    Int?
+  d_exam_lab_estado         Int?
+  d_exam_lab_fecha_registro DateTime?       @db.DateTime
+  d_exam_lab_fecha_modifica DateTime?       @db.DateTime
+  d_exam_lab_user_registro  Int?
+  d_exam_lab_user_modifica  Int?
+  resultado_lab             resultado_lab[]
+}
+
+model detalle_entidad {
+  det_cp_id       Int        @id(map: "PK__detalle___DE3325B5D35739F2") @default(autoincrement())
+  det_cp_contacto Int
+  det_cp_entidad  String     @db.Char(6)
+  contacto        contacto   @relation(fields: [det_cp_contacto], references: [contac_id], onUpdate: NoAction, map: "FK__detalle_e__det_c__4B622666")
+  TabEntidad      TabEntidad @relation(fields: [det_cp_entidad], references: [IdEmpresa], onUpdate: NoAction, map: "FK__detalle_e__det_c__4C5B1B6B")
+}
+
+model empresa {
+  id_empresa    Int           @id(map: "PK__empresa__4A0B7E2CA55985C0") @default(autoincrement())
+  c_codigo      String        @unique(map: "UQ__empresa__6C15C009043DC3F8") @db.VarChar(5)
+  t_descripcion String        @unique(map: "UQ__empresa__5E1FB8B72A6645F7") @db.VarChar(50)
+  t_observacion String?       @db.VarChar(200)
+  f_activo      Boolean?      @default(true, map: "DF__empresa__f_activ__1D9B5BB6")
+  ATENCION      ATENCION[]
+  medico        medico[]
+  PACIENTE      PACIENTE[]
+  TabSucursal   TabSucursal[]
+}
+
+model especialidad {
+  id_especialidad Int      @id(map: "PK__especial__C1D13763743C684E") @default(autoincrement())
+  c_codigo        String   @db.VarChar(10)
+  t_descripcion   String   @db.VarChar(50)
+  t_observacion   String?  @db.VarChar(200)
+  f_activo        Boolean? @default(true, map: "DF__especiali__f_act__546C6DB3")
+  medico          medico[]
+}
+
+model estado_civil {
+  id_estado_civil Int      @id(map: "PK__estado_c__D7960FBA6FD88FF7") @default(autoincrement())
+  c_codigo        String   @unique(map: "UQ__estado_c__6C15C00977E6185B") @db.VarChar(2)
+  t_descripcion   String   @unique(map: "UQ__estado_c__5E1FB8B76D256FC2") @db.VarChar(50)
+  t_observacion   String?  @db.VarChar(200)
+  f_activo        Boolean? @default(true, map: "DF__estado_ci__f_act__556091EC")
+}
+
+model genero {
+  id_genero     Int        @id(map: "PK__genero__99A8E4F92DDB0FF3") @default(autoincrement())
+  c_codigo      String     @unique(map: "UQ__genero__6C15C00928FB0C4E") @db.VarChar(2)
+  t_descripcion String     @unique(map: "UQ__genero__5E1FB8B765E10DB3") @db.VarChar(50)
+  t_observacion String?    @db.VarChar(200)
+  f_activo      Boolean?   @default(true, map: "DF__genero__f_activo__5654B625")
+  medico        medico[]
+  PACIENTE      PACIENTE[]
+}
+
+model grupo_sanguineo {
+  id_grupo_sanguineo Int        @id(map: "PK__grupo_sa__32EE7BA7E87B6D1D") @default(autoincrement())
+  c_codigo           String     @db.VarChar(10)
+  t_descripcion      String     @db.VarChar(50)
+  t_observacion      String?    @db.VarChar(200)
+  f_activo           Boolean?   @default(true, map: "DF__grupo_san__f_act__5748DA5E")
+  PACIENTE           PACIENTE[]
+}
+
+model medico {
+  id_medico          Int          @id(map: "PK__medico__E038EB43DDA7DBCF") @default(autoincrement())
+  c_codigo           String       @db.VarChar(10)
+  t_descripcion      String       @db.VarChar(50)
+  t_direccion        String?      @db.VarChar(100)
+  t_observacion      String?      @db.VarChar(200)
+  c_numero_fono1     String?      @db.VarChar(25)
+  c_numero_fono2     String?      @db.VarChar(25)
+  c_colegio_medico   Int?
+  f_activo           Boolean?     @default(true, map: "DF__medico__f_activo__583CFE97")
+  id_empresa         Int
+  id_genero          Int
+  id_tipo_medico     Int
+  id_especialidad    Int
+  id_tipo_documento  Int
+  c_numero_documento String       @db.VarChar(25)
+  n_codigo_rs        Int?
+  Prioridad          String?      @db.Char(6)
+  Email              String?      @db.VarChar(50)
+  ATENCION           ATENCION[]
+  empresa            empresa      @relation(fields: [id_empresa], references: [id_empresa], onUpdate: NoAction, map: "FK__medico__id_empre__6E2C3FB6")
+  especialidad       especialidad @relation(fields: [id_especialidad], references: [id_especialidad], onUpdate: NoAction, map: "FK__medico__id_espec__6F2063EF")
+  genero             genero       @relation(fields: [id_genero], references: [id_genero], onUpdate: NoAction, map: "FK__medico__id_gener__70148828")
+  tipo_medico        tipo_medico  @relation(fields: [id_tipo_medico], references: [id_tipo_medico], onUpdate: NoAction, map: "FK__medico__id_tipo___7108AC61")
+}
+
+model PACIENTE {
+  id_paciente          Int             @id(map: "PK__PACIENTE__2C2C72BB26A8A2F1") @default(autoincrement())
+  id_empresa           Int
+  t_apellido_paterno   String          @db.VarChar(80)
+  t_apellido_materno   String          @db.VarChar(80)
+  t_nombres            String          @db.VarChar(80)
+  t_nombre_paciente    String          @db.VarChar(200)
+  id_tipo_documento    Int
+  c_numero_documento   String          @db.VarChar(25)
+  c_numero_historia    String          @db.VarChar(8)
+  d_fecha_nacimiento   DateTime        @db.DateTime
+  id_genero            Int
+  f_activo             Boolean         @default(true, map: "DF__PACIENTE__f_acti__593122D0")
+  t_lugar_nacimiento   String?         @db.VarChar(80)
+  t_nacionalidad       String?         @db.VarChar(80)
+  t_domicilio_1        String?         @db.VarChar(80)
+  t_domicilio_2        String?         @db.VarChar(80)
+  t_email              String?         @db.VarChar(100)
+  t_correo_electronico String?         @db.VarChar(100)
+  t_alergias           String?         @db.VarChar(80)
+  c_numero_fono1       String?         @db.VarChar(25)
+  c_numero_fono2       String?         @db.VarChar(25)
+  c_numero_celular1    String?         @db.VarChar(25)
+  c_numero_celular2    String?         @db.VarChar(25)
+  id_tipo_ocupacion    Int
+  t_ocupacion          String          @db.VarChar(50)
+  id_estado_civil      Int
+  id_grupo_sanguineo   Int
+  FechaReg             DateTime?       @db.DateTime
+  Acceso               Boolean?
+  IdPais               Int?            @default(1, map: "DF__PACIENTE__IdPais__5A254709")
+  ATENCION             ATENCION[]
+  empresa              empresa         @relation(fields: [id_empresa], references: [id_empresa], onUpdate: NoAction, map: "FK__PACIENTE__id_emp__72F0F4D3")
+  genero               genero          @relation(fields: [id_genero], references: [id_genero], onUpdate: NoAction, map: "FK__PACIENTE__id_gen__73E5190C")
+  grupo_sanguineo      grupo_sanguineo @relation(fields: [id_grupo_sanguineo], references: [id_grupo_sanguineo], onUpdate: NoAction, map: "FK__PACIENTE__id_gru__74D93D45")
+}
+
+model pais {
+  id_pais       Int      @id(map: "PK__pais__0941A3A7B8367F20") @default(autoincrement())
+  c_codigo      String   @unique(map: "UQ__pais__6C15C0095FFF7BBC") @db.VarChar(4)
+  t_descripcion String   @unique(map: "UQ__pais__5E1FB8B7876D2C61") @db.VarChar(100)
+  t_observacion String?  @db.VarChar(200)
+  f_activo      Boolean? @default(true, map: "DF__pais__f_activo__5B196B42")
+}
+
+model parentesco {
+  id_parentesco Int        @id(map: "PK__parentes__8F56AC318AF0230F") @default(autoincrement())
+  c_codigo      String     @unique(map: "UQ__parentes__6C15C009762469D1") @db.VarChar(2)
+  t_descripcion String     @unique(map: "UQ__parentes__5E1FB8B795A4E341") @db.VarChar(50)
+  t_observacion String?    @db.VarChar(200)
+  f_activo      Boolean?   @default(true, map: "DF__parentesc__f_act__5C0D8F7B")
+  c_codigo_rs   String?    @db.VarChar(2)
+  ATENCION      ATENCION[]
+}
+
+model persona {
+  per_id              Int          @id(map: "PK__persona__32A15E6730F27978") @default(autoincrement())
+  per_tipo_doc        String?      @db.VarChar(25)
+  per_nro_doc         String?      @db.VarChar(15)
+  per_appat           String?      @db.VarChar(50)
+  per_apmat           String?      @db.VarChar(50)
+  per_nombres         String?      @db.VarChar(80)
+  per_cel             String       @unique(map: "UQ__persona__59E666B4D58949A9") @db.VarChar(15)
+  per_direccion       String?      @db.VarChar(150)
+  per_correo          String?      @db.VarChar(80)
+  per_sexo            String?      @db.VarChar(20)
+  per_esta_civil      String?      @db.VarChar(25)
+  per_fecha_nac       DateTime?    @db.Date
+  per_fech_reg        DateTime?    @default(now(), map: "DF__persona__per_fec__31A25463") @db.DateTime
+  per_fech_update     DateTime?    @db.DateTime
+  per_nombre_completo String?      @db.VarChar(200)
+  per_firma_src       String?      @db.VarChar(200)
+  ATENCION            ATENCION[]
+  contacto            contacto[]
+  sys_acceso          sys_acceso[]
+}
+
+model resultado_lab {
+  result_lab_id                      Int                         @id(map: "PK__resultad__8331AD804BB006AA") @default(autoincrement())
+  result_lab_id_ord_servicio         Int?
+  result_lab_id_d_examen_lab         Int
+  result_lab_resultado               String                      @db.VarChar(100)
+  result_lab_fecha_reg               DateTime                    @db.DateTime
+  result_lab_fecha_modi              DateTime?                   @db.DateTime
+  result_lab_usu_reg                 Int?
+  result_lab_usu_modi                Int?
+  result_lab_n_documento             String?                     @db.VarChar(25)
+  result_lab_id_ord_servicio_romsoft Int?
+  result_lab_id_ord_servicio_romsoft_det Int?
+  result_lab_comentario              String?                      @db.VarChar(200)
+  ADM_ORDEN_SERVICIO_DETALLE         ADM_ORDEN_SERVICIO_DETALLE? @relation(fields: [result_lab_id_ord_servicio], references: [id_orden_servicio_detalle], onDelete: NoAction, onUpdate: NoAction, map: "FK__resultado__resul__26A5A303")
+  d_examen_lab                       d_examen_lab                @relation(fields: [result_lab_id_d_examen_lab], references: [d_exam_lab_id], onUpdate: NoAction, map: "FK__resultado__resul__2799C73C")
+}
+
+model solicitud_atencion {
+  IdSolicitud           Int               @id(map: "PK__solicitu__36899CEF594A2347") @default(autoincrement())
+  IdLlamada             String?           @db.VarChar(10)
+  fecha                 DateTime?         @db.DateTime
+  Empresa               String?           @db.VarChar(100)
+  Paciente              String?           @db.VarChar(100)
+  Detalle               String?           @db.VarChar(200)
+  IdEmpresa             String?           @db.Char(6)
+  Contacto              String?           @db.VarChar(100)
+  IdContacto            Int?
+  IdEstado              Int?
+  IdTipoSolicitud       Int?
+  FecReg                DateTime?         @db.Date
+  FecModi               DateTime?         @db.DateTime
+  MotivoAnulacion       String?           @db.VarChar(150)
+  IdUsuarioModi         Int?
+  IdSucursal            Int?
+  Direccion             String?           @db.VarChar(250)
+  Ubicacion             String?           @db.VarChar(Max)
+  TelefContacto         String?           @db.Char(25)
+  Servicio              String?           @db.VarChar(100)
+  MedicoTratante        String?           @db.VarChar(100)
+  Seguro                String?           @db.VarChar(100)
+  Activo                Boolean?
+  Hora                  String?           @db.Char(8)
+  IdCanal               Int?
+  LugarAtencion         String?           @db.VarChar(150)
+  IdMedico              Int?
+  IdModulo              Int?
+  Diferenciado          Boolean?
+  id_usuario_reg        Int?
+  usuario_acceso_create Int?
+  usuario_acceso_update Int?
+  latitud               Float?
+  longitud              Float?
+  num_caso              String?           @db.VarChar(25)
+  cita                  Boolean?
+  TabCanal              TabCanal?         @relation(fields: [IdCanal], references: [IdCanal], onDelete: NoAction, onUpdate: NoAction, map: "FK__solicitud__IdCan__57C7FD4B")
+  contacto              contacto?         @relation(fields: [IdContacto], references: [contac_id], onDelete: NoAction, onUpdate: NoAction, map: "FK__solicitud__IdCon__54EB90A0")
+  TabEntidad            TabEntidad?       @relation(fields: [IdEmpresa], references: [IdEmpresa], onDelete: NoAction, onUpdate: NoAction, map: "FK__solicitud__IdEmp__32B6742D")
+  TabEstado             TabEstado?        @relation(fields: [IdEstado], references: [IdEstado], onDelete: NoAction, onUpdate: NoAction, map: "FK__solicitud__IdEst__55DFB4D9")
+  TabSucursal           TabSucursal?      @relation(fields: [IdSucursal], references: [IdSucursal], onDelete: NoAction, onUpdate: NoAction, map: "FK__solicitud__IdSuc__5DD5DC5C")
+  TabTipoSolicitud      TabTipoSolicitud? @relation(fields: [IdTipoSolicitud], references: [id_tipo_solicitud], onDelete: NoAction, onUpdate: NoAction, map: "FK__solicitud__IdTip__5CE1B823")
+}
+
+model sys_acceso {
+  acc_id          Int           @id(map: "PK__sys_acce__9A20D55407D7881D") @default(autoincrement())
+  acc_persona     Int?
+  acc_email       String?       @db.VarChar(100)
+  acc_celular     String?       @unique(map: "UQ__sys_acce__37B288F89B752131") @db.VarChar(20)
+  acc_nombre      String        @db.VarChar(255)
+  acc_password    String        @db.VarChar(255)
+  acc_fech_acceso DateTime?     @db.DateTime
+  acc_create      DateTime      @default(now(), map: "DF__sys_acces__acc_c__384F51F2") @db.DateTime
+  acc_update      DateTime?     @db.DateTime
+  acc_st          Int?          @default(0, map: "DF__sys_acces__acc_s__3943762B")
+  acc_token       String?       @db.VarChar(200)
+  acc_firma       Int           @default(0, map: "DF__sys_acces__acc_f__0AC87E64") @db.TinyInt
+  acc_pin         String?       @db.VarChar(15)
+  persona         persona?      @relation(fields: [acc_persona], references: [per_id], onDelete: NoAction, onUpdate: NoAction, map: "FK__sys_acces__acc_p__375B2DB9")
+  sys_control     sys_control[]
+}
+
+model sys_control {
+  cont_id       Int         @id(map: "PK__sys_cont__9BD9F9403C5F2B3C") @default(autoincrement())
+  cont_sucursal Int
+  cont_acceso   Int
+  cont_perfil   Int
+  cont_st       Boolean     @default(true, map: "DF__sys_contr__cont___3EFC4F81")
+  TabSucursal   TabSucursal @relation(fields: [cont_sucursal], references: [IdSucursal], onUpdate: NoAction, map: "FK__sys_contr__cont___3C1FE2D6")
+  sys_acceso    sys_acceso  @relation(fields: [cont_acceso], references: [acc_id], onUpdate: NoAction, map: "FK__sys_contr__cont___3D14070F")
+  sys_perfil    sys_perfil  @relation(fields: [cont_perfil], references: [perf_id], onUpdate: NoAction, map: "FK__sys_contr__cont___3E082B48")
+}
+
+model sys_dperfil {
+  dperf_id       Int          @id(map: "PK__sys_dper__57EE5B8E36098334") @default(autoincrement())
+  dperf_menu     String?      @db.VarChar(20)
+  dperf_perfil   Int?
+  dperf_permisos String       @db.VarChar(10)
+  sys_submenu    sys_submenu? @relation(fields: [dperf_menu], references: [submenu_id], onDelete: NoAction, onUpdate: NoAction, map: "FK__sys_dperf__dperf__2AF556D4")
+  sys_perfil     sys_perfil?  @relation(fields: [dperf_perfil], references: [perf_id], onDelete: NoAction, onUpdate: NoAction, map: "FK__sys_dperf__dperf__2BE97B0D")
+}
+
+model sys_menu {
+  menu_id     String        @id(map: "PK__sys_menu__4CA0FADCB45087EC") @db.VarChar(20)
+  menu_desc   String        @db.VarChar(100)
+  sys_submenu sys_submenu[]
+}
+
+model sys_perfil {
+  perf_id     Int           @id(map: "PK__sys_perf__6342AC13074B0564") @default(autoincrement())
+  perf_desc   String        @db.VarChar(100)
+  sys_control sys_control[]
+  sys_dperfil sys_dperfil[]
+}
+
+model sys_submenu {
+  submenu_id   String        @id(map: "PK__sys_subm__C8A8BB92F8CFC0FB") @db.VarChar(20)
+  submenu_menu String?       @db.VarChar(20)
+  submenu_desc String        @db.VarChar(100)
+  submenu_icon String?       @db.VarChar(200)
+  sys_dperfil  sys_dperfil[]
+  sys_menu     sys_menu?     @relation(fields: [submenu_menu], references: [menu_id], onDelete: NoAction, onUpdate: NoAction, map: "FK__sys_subme__subme__2630A1B7")
+}
+
+model sysdiagrams {
+  name         String @db.NVarChar(128)
+  principal_id Int
+  diagram_id   Int    @id(map: "PK__sysdiagr__C2B05B617DE9A2A8") @default(autoincrement())
+  version      Int?
+  definition   Bytes?
+
+  @@unique([principal_id, name], map: "UK_principal_name")
+}
+
+model TabCanal {
+  IdCanal            Int                  @id(map: "PK__TabCanal__6DA056DEBE4EA25E") @default(autoincrement())
+  Descripcion        String?              @db.VarChar(100)
+  Activo             Boolean?
+  solicitud_atencion solicitud_atencion[]
+}
+
+model TabEntidad {
+  IdEmpresa             String               @id(map: "PK__TabEntid__5EF4033E1B85F214") @db.Char(6)
+  CodRom                String?              @db.Char(11)
+  RazonSocial           String?              @db.VarChar(50)
+  NomComer              String?              @db.VarChar(50)
+  Direccion             String?              @db.VarChar(50)
+  Email                 String?              @db.VarChar(50)
+  Ruc                   String?              @db.Char(11)
+  Telef                 String?              @db.Char(15)
+  CodigoMapa            String?              @db.Char(6)
+  Ubicacion             String?              @db.VarChar(600)
+  Activo                Boolean?
+  id_zona               Int?
+  id_tipo_entidad       Int?
+  competencia           Boolean?             @default(false, map: "DF__TabEntida__compe__76F68FE1")
+  id_usu_registro       Int?
+  id_usu_modifica       Int?
+  fecha_registro        DateTime?            @db.DateTime
+  fecha_modifica        DateTime?            @db.DateTime
+  usuario_acceso_create Int?
+  usuario_acceso_update Int?
+  latitud               Float?               @default(0, map: "DF__TabEntida__latit__77EAB41A")
+  longitud              Float?               @default(0, map: "DF__TabEntida__longi__78DED853")
+  detalle_entidad       detalle_entidad[]
+  solicitud_atencion    solicitud_atencion[]
+  TabTipoEntidad        TabTipoEntidad?      @relation(fields: [id_tipo_entidad], references: [id_tipo_entidad], onDelete: NoAction, onUpdate: NoAction, map: "FK__TabEntida__id_ti__01DE32A8")
+  TabZona               TabZona?             @relation(fields: [id_zona], references: [id_zona], onDelete: NoAction, onUpdate: NoAction, map: "FK__TabEntida__id_zo__33AA9866")
+  visita_ventas         visita_ventas[]
+}
+
+model TabEstado {
+  IdEstado           Int                  @id(map: "PK__TabEstad__FBB0EDC141D476E9") @default(autoincrement())
+  Codigo             String?              @db.Char(6)
+  Descripcion        String?              @db.VarChar(100)
+  IdGrupo            Int?
+  Activo             Boolean?
+  ContactCenter      Boolean?
+  Habitacion         Boolean?
+  solicitud_atencion solicitud_atencion[]
+  visita_ventas      visita_ventas[]
+}
+
+model TabSucursal {
+  IdSucursal         Int                  @id(map: "PK__TabSucur__BFB6CD997C20B1A4") @default(autoincrement())
+  IdEmpresa          Int
+  Descripcion        String               @db.VarChar(100)
+  Activo             Boolean?             @default(true, map: "DF__TabSucurs__Activ__216BEC9A")
+  id_sede_romsoft    Int?
+  solicitud_atencion solicitud_atencion[]
+  sys_control        sys_control[]
+  empresa            empresa              @relation(fields: [IdEmpresa], references: [id_empresa], onUpdate: NoAction, map: "FK__TabSucurs__IdEmp__2077C861")
+}
+
+model TabTipoEntidad {
+  id_tipo_entidad Int          @id(map: "PK__TabTipoE__6F2231DBD2CA27DA") @default(autoincrement())
+  id_categoria    Int?
+  descripcion     String?      @db.VarChar(30)
+  observacion     String?      @db.VarChar(50)
+  activo          Boolean?
+  id_usu_registro Int?
+  id_usu_modifica Int?
+  fecha_registro  DateTime?    @db.DateTime
+  fecha_modifica  DateTime?    @db.DateTime
+  TabEntidad      TabEntidad[]
+}
+
+model TabTipoSolicitud {
+  id_tipo_solicitud  Int                  @id(map: "PK__TabTipoS__BB6EAFD6838FEC33") @default(autoincrement())
+  descripcion        String?              @db.VarChar(50)
+  observacion        String?              @db.VarChar(80)
+  estado             Int?
+  id_usu_registro    Int?
+  id_usu_modifica    Int?
+  fecha_registro     DateTime?            @db.DateTime
+  fecha_modifica     DateTime?            @db.DateTime
+  solicitud_atencion solicitud_atencion[]
+}
+
+model TabZona {
+  id_zona         Int          @id(map: "PK__TabZona__67C9361108C03FFD") @default(autoincrement())
+  descripcion     String?      @db.VarChar(30)
+  observacion     String?      @db.VarChar(50)
+  activo          Boolean?
+  id_usu_registro Int?
+  id_usu_modifica Int?
+  fecha_registro  DateTime?    @db.DateTime
+  fecha_modifica  DateTime?    @db.DateTime
+  TabEntidad      TabEntidad[]
+}
+
+model tipo_atencion {
+  id_tipo_atencion Int        @id(map: "PK__tipo_ate__DEE1053B58FB3CE9") @default(autoincrement())
+  c_codigo         String     @unique(map: "UQ__tipo_ate__6C15C0093B1C9A9C") @db.VarChar(2)
+  t_descripcion    String     @unique(map: "UQ__tipo_ate__5E1FB8B79E9549F7") @db.VarChar(50)
+  t_observacion    String?    @db.VarChar(200)
+  f_activo         Boolean?   @default(true, map: "DF__tipo_aten__f_act__5D01B3B4")
+  ATENCION         ATENCION[]
+}
+
+model tipo_contacto {
+  tcontac_id   Int        @id(map: "PK__tipo_con__329D892539668637") @default(autoincrement())
+  tcontac_desc String     @db.VarChar(200)
+  contacto     contacto[]
+}
+
+model tipo_medico {
+  id_tipo_medico Int      @id(map: "PK__tipo_med__73015DBD9358DB7F") @default(autoincrement())
+  c_codigo       String   @unique(map: "UQ__tipo_med__6C15C009B3C0527F") @db.VarChar(1)
+  t_descripcion  String   @unique(map: "UQ__tipo_med__5E1FB8B7520EA575") @db.VarChar(50)
+  t_observacion  String?  @db.VarChar(200)
+  f_activo       Boolean? @default(true, map: "DF__tipo_medi__f_act__5DF5D7ED")
+  medico         medico[]
+}
+
+model tipo_paciente {
+  id_tipo_paciente Int        @id(map: "PK__tipo_pac__E58592308248AD6E") @default(autoincrement())
+  c_codigo         String     @unique(map: "UQ__tipo_pac__6C15C009E666B954") @db.VarChar(2)
+  t_descripcion    String     @unique(map: "UQ__tipo_pac__5E1FB8B7D83E8D3F") @db.VarChar(50)
+  t_observacion    String?    @db.VarChar(200)
+  f_activo         Boolean?   @default(true, map: "DF__tipo_paci__f_act__5EE9FC26")
+  ATENCION         ATENCION[]
+}
+
+model visita_competencia {
+  compv_id              Int             @id(map: "PK__visita_c__2FCC7180BC17425D") @default(autoincrement())
+  compv_nombre_comer    String?         @db.VarChar(100)
+  compv_activo          Boolean?
+  compv_id_usu_registro Int?
+  compv_id_usu_modifica Int?
+  compv_fecha_reg       DateTime?       @db.DateTime
+  compv_fecha_modi      DateTime?       @db.DateTime
+  visita_ventas         visita_ventas[]
+}
+
+model visita_ventas {
+  visitav_id                     Int                 @id(map: "PK__visita_v__47DA33AB73090059") @default(autoincrement())
+  visitav_contact_id             Int?
+  visitav_contact                String?             @db.VarChar(45)
+  visitav_entidad_id             String?             @db.Char(6)
+  visitav_entidad                String?             @db.VarChar(50)
+  visitav_estado_id              Int?
+  visitav_fecha_progra           DateTime?           @db.Date
+  visitav_fecha_visita           DateTime?           @db.DateTime
+  visitav_observaciones          String?             @db.VarChar(150)
+  visitav_map_log                Float?
+  visitav_map_lat                Float?
+  visitav_id_usu_registro_progra Int?
+  visitav_id_usu_registro_visita Int?
+  visitav_id_usu_modifica        Int?
+  visitav_fecha_registro         DateTime?           @db.DateTime
+  visitav_fecha_modifica         DateTime?           @db.DateTime
+  visitav_usuario_acceso_create  Int?
+  visitav_usuario_acceso_update  Int?
+  visitav_id_competencia         Int?
+  visitav_botiquin               Boolean?
+  visitav_oxigeno                Boolean?
+  visitav_restautante            Boolean?
+  visitav_hotel                  Boolean?
+  visita_competencia             visita_competencia? @relation(fields: [visitav_id_competencia], references: [compv_id], onDelete: NoAction, onUpdate: NoAction, map: "FK__visita_ve__visit__0CE5D100")
+  contacto                       contacto?           @relation(fields: [visitav_contact_id], references: [contac_id], onDelete: NoAction, onUpdate: NoAction, map: "FK__visita_ve__visit__5105F123")
+  TabEntidad                     TabEntidad?         @relation(fields: [visitav_entidad_id], references: [IdEmpresa], onDelete: NoAction, onUpdate: NoAction, map: "FK__visita_ve__visit__51FA155C")
+  TabEstado                      TabEstado?          @relation(fields: [visitav_estado_id], references: [IdEstado], onDelete: NoAction, onUpdate: NoAction, map: "FK__visita_ve__visit__52EE3995")
+}
+
+model FAC_ORDEN_SERVICIO {
+  id_orden_servicio    Int       @id(map: "PK__FAC_ORDE__AF9AF60757425499") @default(autoincrement())
+  f_paciente           Int?
+  id_atencion          Int?
+  t_observacion        String?   @db.VarChar(500)
+  n_total              Decimal   @db.Decimal(11, 2)
+  n_paciente           Decimal   @db.Decimal(11, 2)
+  n_garante            Decimal   @db.Decimal(11, 2)
+  n_igv_total          Decimal   @db.Decimal(11, 2)
+  n_igv_paciente       Decimal   @db.Decimal(11, 2)
+  n_igv_garante        Decimal   @db.Decimal(11, 2)
+  f_estado             Int?
+  id_user_registro     Int?
+  id_user_modifica     Int?
+  id_user_proceso      Int?
+  id_user_anulacion    Int?
+  d_fecha_registro     DateTime? @db.DateTime
+  d_fecha_modifica     DateTime? @db.DateTime
+  d_fecha_proceso      DateTime? @db.DateTime
+  d_fecha_anulacion    DateTime? @db.DateTime
+  f_resultado          Int?
+  n_copago_fijo        Decimal   @db.Decimal(11, 2)
+  n_copago_variable    Decimal   @db.Decimal(6, 2)
+  id_comprobante       Int?
+  usu_acceso_registro  Int?
+  usu_acceso_modifica  Int?
+  usu_acceso_proceso   Int?
+  usu_acceso_anulacion Int?
+}
+
+model FAC_ORDEN_SERVICIO_DETALLE {
+  id_orden_servicio_detalle Int      @id(map: "PK__FAC_ORDE__7D1E9FC487555083") @default(autoincrement())
+  id_orden_servicio         Int
+  id_tarifario_segus        Int
+  n_precio                  Decimal  @db.Decimal(11, 2)
+  n_cantidad                Decimal  @db.Decimal(11, 2)
+  n_parcial                 Decimal  @db.Decimal(11, 2)
+  n_dscto_1_porc            Decimal  @db.Decimal(6, 2)
+  n_dscto_1_imp             Decimal  @db.Decimal(11, 2)
+  n_dscto_2_porc            Decimal  @db.Decimal(6, 2)
+  n_dscto_2_imp             Decimal  @db.Decimal(11, 2)
+  n_aumento_1_porc          Decimal  @db.Decimal(6, 2)
+  n_aumento_1_imp           Decimal  @db.Decimal(11, 2)
+  id_user_dscto             Int?
+  n_dscto_aud_porc          Decimal  @db.Decimal(6, 2)
+  n_dscto_aud_imp           Decimal  @db.Decimal(11, 2)
+  t_dscto_aud_obs           String   @db.VarChar(200)
+  n_total                   Decimal  @db.Decimal(11, 2)
+  n_paciente                Decimal  @db.Decimal(11, 2)
+  n_garante                 Decimal  @db.Decimal(11, 2)
+  n_copago_variable         Decimal  @db.Decimal(6, 2)
+  n_copago_fijo             Decimal  @db.Decimal(11, 2)
+  f_copago_fijo             Int
+  n_igv_total               Decimal  @db.Decimal(11, 2)
+  n_igv_paciente            Decimal  @db.Decimal(11, 2)
+  n_igv_garante             Decimal  @db.Decimal(11, 2)
+  f_afecto                  Int
+  f_estado                  Int
+  f_habitacion              Int
+  f_honorario               Int
+  id_profesional            Int?
+  f_pago                    Int?
+  n_profesional             Decimal? @db.Decimal(11, 2)
+  n_pago                    Decimal? @db.Decimal(11, 2)
+  id_user_pago              Int?
+  d_fecha_pago              DateTime @db.DateTime
+  usu_acceso_dscto          Int?
+  usu_acceso_pago           Int?
+}
+
+model CVN_CATEGORIA_PAGO_PRECIO {
+  id_categoria_pago_precio Int       @id(map: "PK__CVN_CATE__D65FC1FA3F0B0131") @default(autoincrement())
+  id_categoria_pago        Int?
+  id_tarifario_segus       Int?
+  n_precio_usd             Decimal?  @db.Decimal(9, 2)
+  n_precio_sol             Decimal?  @db.Decimal(9, 2)
+  f_estado                 Int?
+  id_user_registro         Int?
+  id_user_modifica         Int?
+  d_fecha_registro         DateTime? @db.DateTime
+  d_fecha_modifica         DateTime? @db.DateTime
+  usu_acceso_registro      Int?
+  usu_acceso_modifica      Int?
+}
