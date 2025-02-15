@@ -5,7 +5,15 @@
   "scripts": {
     "dev": "ts-node-dev --no-notify --respawn --transpile-only src/server",
     "build": "rimraf build && tsc",
-    "start": "npm run build && node build/server.js"
+    "start": "npm run build && node build/server.js",
+    "seed": "ts-node prisma/seed.ts",
+    "teleton": "ts-node prisma/teleton.ts",
+    "conta": "ts-node prisma/conta_mensual.ts",
+    "segus": "ts-node prisma/segus.ts",
+    "lista_tarifa": "ts-node prisma/lista_tarifa.ts",
+    "crea_tarifa": "ts-node prisma/crea_tarifa.ts",
+    "leer": "ts-node prisma/leerExcel.ts",
+    "prod": "ts-node prisma/procedimiento.ts"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
@@ -13,22 +21,23 @@
   "author": "Mikail Castro",
   "license": "ISC",
   "devDependencies": {
-    "@types/bcrypt": "^5.0.0",
-    "@types/jsonwebtoken": "^9.0.0",
-    "@types/node": "^18.11.18",
-    "prisma": "^4.8.1",
-    "ts-node": "^10.9.1",
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/node": "^22.10.6",
+    "prisma": "^6.2.1",
+    "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^4.7.4"
+    "typescript": "^5.7.3"
   },
   "dependencies": {
-    "@apollo/server": "^4.3.0",
-    "@prisma/client": "^4.8.1",
-    "bcrypt": "^5.1.0",
-    "graphql": "^16.6.0",
-    "graphql-scalars": "^1.20.1",
-    "jsonwebtoken": "^9.0.0",
-    "moment-timezone": "^0.5.43"
+    "@apollo/server": "^4.11.3",
+    "@prisma/client": "^6.2.1",
+    "bcrypt": "^5.1.1",
+    "graphql": "^16.10.0",
+    "graphql-scalars": "^1.24.0",
+    "jsonwebtoken": "^9.0.2",
+    "moment-timezone": "^0.5.46",
+    "xlsx": "^0.18.5"
   },
   "description": ""
 }

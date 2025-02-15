@@ -1,0 +1,17 @@
+{
+  "batch": [
+    {
+      "negociacionpreciodet_ncod": 2,
+      "negociacionpreciodet_tcod": 2,
+      "negociacionpreciodet_tditem": 125,
+      "negociacionpreciodet_dscto": 0,
+      "negociacionpreciodet_tpmov": 0,
+      "negociacionpreciodet_fcreacion": "2025-02-15T18:08:57.087Z",
+      "negociacionpreciodet_usrcreacion": "sysadmin",
+      "negociacionpreciodet_ipcreacion": "192.168.1.112",
+      "negociacionpreciodet_inafecto_coaseguro": 0,
+      "negociacionpreciodet_pfijo": null,
+      "negociacionpreciodet_precio_virtual": null
+    }
+  ]
+}

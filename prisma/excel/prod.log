@@ -1,0 +1,158 @@
+{
+  "result": 3,
+  "jsonData": [
+    {
+      "cod_negociacion": 3,
+      "desc_negociacion": "Negociación 2",
+      "detalle_Tarifario": [
+        {
+          "item_tarifario": 1,
+          "cod_tarifario": 314,
+          "desc_tarifario": "demo1",
+          "preciodet_dscto": 5.22,
+          "precio_final": 15,
+          "tpmov": 0,
+          "inafecto_coaseguro": 0,
+          "pfijo": "null",
+          "precio_virtual": "null"
+        },
+        {
+          "item_tarifario": 2,
+          "cod_tarifario": 134,
+          "desc_tarifario": "demo2",
+          "preciodet_dscto": 5.22,
+          "precio_final": 15,
+          "tpmov": 0,
+          "inafecto_coaseguro": 0,
+          "pfijo": "null",
+          "precio_virtual": "null"
+        },
+        {
+          "item_tarifario": 3,
+          "cod_tarifario": 13,
+          "desc_tarifario": "demo3",
+          "preciodet_dscto": 5.22,
+          "precio_final": 25,
+          "tpmov": 0,
+          "inafecto_coaseguro": 0,
+          "pfijo": "null",
+          "precio_virtual": "null"
+        },
+        {
+          "item_tarifario": 4,
+          "cod_tarifario": 12,
+          "desc_tarifario": "demo4",
+          "preciodet_dscto": 5.22,
+          "precio_final": 2,
+          "tpmov": 0,
+          "inafecto_coaseguro": 0,
+          "pfijo": "null",
+          "precio_virtual": "null"
+        },
+        {
+          "item_tarifario": 5,
+          "cod_tarifario": 44,
+          "desc_tarifario": "demo5",
+          "preciodet_dscto": 5.22,
+          "precio_final": 5,
+          "tpmov": 1,
+          "inafecto_coaseguro": 0,
+          "pfijo": "null",
+          "precio_virtual": "null"
+        }
+      ]
+    },
+    {
+      "cod_negociacion": 2,
+      "desc_negociacion": "Particular",
+      "detalle_Tarifario": [
+        {
+          "item_tarifario": 1,
+          "cod_tarifario": 314,
+          "desc_tarifario": "demo1",
+          "preciodet_dscto": 5.22,
+          "precio_final": 15,
+          "tpmov": 0,
+          "inafecto_coaseguro": 0,
+          "pfijo": "null",
+          "precio_virtual": "null"
+        },
+        {
+          "item_tarifario": 1,
+          "cod_tarifario": 134,
+          "desc_tarifario": "demo2",
+          "preciodet_dscto": 5.22,
+          "precio_final": 15,
+          "tpmov": 0,
+          "inafecto_coaseguro": 0,
+          "pfijo": "null",
+          "precio_virtual": "null"
+        },
+        {},
+        {},
+        {}
+      ]
+    },
+    {
+      "cod_negociacion": 1,
+      "desc_negociacion": "Negociación 1",
+      "detalle_Tarifario": [
+        {
+          "item_tarifario": 1,
+          "cod_tarifario": 314,
+          "desc_tarifario": "demo1",
+          "preciodet_dscto": 5.22,
+          "precio_final": 15,
+          "tpmov": 0,
+          "inafecto_coaseguro": 0,
+          "pfijo": "null",
+          "precio_virtual": "null"
+        },
+        {
+          "item_tarifario": 2,
+          "cod_tarifario": 134,
+          "desc_tarifario": "demo2",
+          "preciodet_dscto": 5.22,
+          "precio_final": 15,
+          "tpmov": 0,
+          "inafecto_coaseguro": 0,
+          "pfijo": "null",
+          "precio_virtual": "null"
+        },
+        {
+          "item_tarifario": 3,
+          "cod_tarifario": 13,
+          "desc_tarifario": "demo3",
+          "preciodet_dscto": 5.22,
+          "precio_final": 25,
+          "tpmov": 0,
+          "inafecto_coaseguro": 0,
+          "pfijo": "null",
+          "precio_virtual": "null"
+        },
+        {
+          "item_tarifario": 4,
+          "cod_tarifario": 12,
+          "desc_tarifario": "demo4",
+          "preciodet_dscto": 5.22,
+          "precio_final": 2,
+          "tpmov": 0,
+          "inafecto_coaseguro": 0,
+          "pfijo": "null",
+          "precio_virtual": "null"
+        },
+        {
+          "item_tarifario": 5,
+          "cod_tarifario": 44,
+          "desc_tarifario": "demo5",
+          "preciodet_dscto": 5.22,
+          "precio_final": 5,
+          "tpmov": 1,
+          "inafecto_coaseguro": 0,
+          "pfijo": "null",
+          "precio_virtual": "null"
+        }
+      ]
+    }
+  ]
+}
